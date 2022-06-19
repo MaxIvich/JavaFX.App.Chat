@@ -18,6 +18,7 @@ import gb.ru.javafxchat.Command;
 
 
 public class ChatController {
+
     @FXML
     private ListView<String> clientList;
     @FXML

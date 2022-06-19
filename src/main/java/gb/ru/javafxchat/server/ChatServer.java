@@ -17,7 +17,7 @@ public class ChatServer {
     }
 
     public void run() {
-        try (ServerSocket serverSocket = new ServerSocket(8189);
+        try (ServerSocket serverSocket = new ServerSocket(9998);
              AuthService authService = new InMemoryAuthService()) {
             while (true) {
                 System.out.println("Ожидаю подключения...");
