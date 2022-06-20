@@ -29,7 +29,7 @@ import gb.ru.javafxchat.Command;
         }
 
         public void openConnection() throws IOException {
-            socket = new Socket("localhost", 8189);
+            socket = new Socket("localhost", 9998);
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
             new Thread(() -> {
