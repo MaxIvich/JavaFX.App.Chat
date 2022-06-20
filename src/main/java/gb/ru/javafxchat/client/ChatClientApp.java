@@ -12,6 +12,7 @@ public class ChatClientApp extends Application {
         @Override
         public void start(Stage stage) throws IOException {
              FXMLLoader fxmlLoader = new FXMLLoader(ChatClientApp.class.getResource("client-view.fxml"));
+            System.out.println(fxmlLoader.getLocation());
              Scene scene = new Scene(fxmlLoader.load(), 600, 400);
             stage.setTitle("GB Chat client");
             stage.setScene(scene);
@@ -28,5 +29,5 @@ public class ChatClientApp extends Application {
             launch();
         }
     }
-    //java-fx-chat/src/main/resources/javafxchat/
+    //java-fx-chat/src/main/resources/java-fx-chat/
 
