@@ -3,6 +3,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+
 import gb.ru.javafxchat.Command;
 
 public class ClientHandler {
@@ -36,8 +37,15 @@ public class ClientHandler {
     private void authenticate() {
         while (true) {
             try {
+
+
+                checkOutTime();
+
                 final String message = in.readUTF();
                 final Command command = Command.getCommand(message);
+
+
+
 
                 if (command == Command.AUTH) {
                     final String[] params = command.parse(message);
@@ -60,9 +68,24 @@ public class ClientHandler {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+
             }
         }
     }
+
+    private void checkOutTime() {
+        new java.util.Timer().schedule(
+               new java.util.TimerTask(){
+                   @Override
+                   public void run() {
+                       sendMessage(Command.ERROR, "Время подключения истекло  ");
+                       sendMessage(Command.END);
+                   }
+               }
+               ,12000);
+
+    }
+
 
     public void sendMessage(Command command, String... params) {
         sendMessage(command.collectMessage(params));
