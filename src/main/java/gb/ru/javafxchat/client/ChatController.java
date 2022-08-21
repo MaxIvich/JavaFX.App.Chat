@@ -2,8 +2,8 @@ package gb.ru.javafxchat.client;
 import java.io.IOException;
 import java.util.Optional;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
@@ -126,6 +126,15 @@ public class ChatController {
     public ChatClient getClient() {
         return client;
     }
+
+    public void RegBtnClick(ActionEvent actionEvent) {
+
+    }
+
+    public void changeNickBtn(ActionEvent actionEvent) {
+
+    }
+
 }
 
 

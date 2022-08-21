@@ -29,7 +29,7 @@ import gb.ru.javafxchat.Command;
         }
 
         public void openConnection() throws IOException {
-            socket = new Socket("localhost", 9998);
+            socket = new Socket("localhost", 9990);
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
             new Thread(() -> {
@@ -93,7 +93,8 @@ import gb.ru.javafxchat.Command;
                 final Command command = getCommand(message);
                 if (END == command) {
                     controller.setAuth(false);
-                    break;
+                     break;
+
                 }
                 final String[] params = command.parse(message);
                 if (ERROR == command) {
@@ -122,4 +123,5 @@ import gb.ru.javafxchat.Command;
             sendMessage(command.collectMessage(params));
         }
     }
+
 

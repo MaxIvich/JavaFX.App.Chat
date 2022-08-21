@@ -1,13 +1,14 @@
 package gb.ru.javafxchat.server;
+
+import gb.ru.javafxchat.Command;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import gb.ru.javafxchat.Command;
-
+import  java.sql.*;
 
 public class ChatServer {
     private final Map<String, ClientHandler> clients;
@@ -17,7 +18,7 @@ public class ChatServer {
     }
 
     public void run() {
-        try (ServerSocket serverSocket = new ServerSocket(9998);
+        try (ServerSocket serverSocket = new ServerSocket(9990);
              AuthService authService = new InMemoryAuthService()) {
             while (true) {
                 System.out.println("Ожидаю подключения...");

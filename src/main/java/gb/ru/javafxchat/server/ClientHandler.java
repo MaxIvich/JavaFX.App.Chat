@@ -82,7 +82,7 @@ public class ClientHandler {
                        sendMessage(Command.END);
                    }
                }
-               ,12000);
+               ,120000);
 
     }
 
@@ -132,6 +132,8 @@ public class ClientHandler {
                 final Command command = Command.getCommand(message);
                 if (command == Command.END) {
                     break;
+
+
                 }
                 if (command == Command.PRIVATE_MESSAGE) {
                     final String[] params = command.parse(message);
