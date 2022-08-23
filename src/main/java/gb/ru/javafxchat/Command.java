@@ -62,6 +62,13 @@ public enum Command {
             final String[] split = commandText.split(TOKEN_DELIMITER, 2);
             return new String[]{split[1]};
         }
+    },
+    ChangeNick("/ChangeNick") {
+        @Override
+        public String[] parse(String commandText) {
+            final String[] split = commandText.split(TOKEN_DELIMITER, 2);
+            return new String[]{split[1]};
+        }
     };
    // LOGOUTMSG("/logout"){
    //     @Override

@@ -19,7 +19,7 @@ public class ChatServer {
 
     public void run() {
         try (ServerSocket serverSocket = new ServerSocket(9990);
-             AuthService authService = new InMemoryAuthService()) {
+             AuthService authService = new SqlBd()) {
             while (true) {
                 System.out.println("Ожидаю подключения...");
                 final Socket socket = serverSocket.accept();
@@ -66,5 +66,9 @@ public class ChatServer {
         }
         clientTo.sendMessage(Command.MESSAGE, "От " + from.getNick() + ": " + message);
         from.sendMessage(Command.MESSAGE, "Участнику " + nickTo + ": " + message);
+    }
+
+    public void changeNick(ClientHandler clientHandler, String newNick) {
+
     }
 }

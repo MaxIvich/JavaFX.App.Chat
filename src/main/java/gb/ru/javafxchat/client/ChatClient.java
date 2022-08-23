@@ -63,6 +63,7 @@ import gb.ru.javafxchat.Command;
             }
         }
 
+
         private void closeConnection() {
             if (in != null) {
                 try {
@@ -122,6 +123,8 @@ import gb.ru.javafxchat.Command;
         public void sendMessage(Command command, String... params) {
             sendMessage(command.collectMessage(params));
         }
+
+
     }
 
 

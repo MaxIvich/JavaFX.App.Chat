@@ -5,4 +5,5 @@ import  java.sql.*;
 
 public interface AuthService extends Closeable {
         String getNickByLoginAndPassword(String login, String password);
+
 }

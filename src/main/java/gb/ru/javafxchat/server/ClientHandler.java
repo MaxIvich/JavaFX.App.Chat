@@ -39,7 +39,7 @@ public class ClientHandler {
             try {
 
 
-                checkOutTime();
+               // checkOutTime();
 
                 final String message = in.readUTF();
                 final Command command = Command.getCommand(message);
@@ -140,6 +140,10 @@ public class ClientHandler {
                     server.sendPrivateMessage(this, params[0], params[1]);
                     continue;
                 }
+               // if (command == Command.ChangeNick){
+               //     String newNick = command.parse(message)[0];
+               //     server.changeNick(this,newNick);
+               // }
                 server.broadcast(Command.MESSAGE, nick + ": " + command.parse(message)[0]);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -147,7 +151,11 @@ public class ClientHandler {
         }
     }
 
-    public String getNick() {
+    public  String getNick() {
         return nick;
     }
+    public void newNickAdd(String nick){
+
+    }
+
 }
