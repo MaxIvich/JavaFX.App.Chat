@@ -1,13 +1,6 @@
 package gb.ru.javafxchat.client;
 
 
-import static gb.ru.javafxchat.Command.AUTHOK;
-import static gb.ru.javafxchat.Command.CLIENTS;
-import static gb.ru.javafxchat.Command.END;
-import static gb.ru.javafxchat.Command.ERROR;
-import static gb.ru.javafxchat.Command.MESSAGE;
-import static gb.ru.javafxchat.Command.getCommand;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -16,7 +9,9 @@ import java.net.Socket;
 import javafx.application.Platform;
 import gb.ru.javafxchat.Command;
 
-    public class ChatClient {
+import static gb.ru.javafxchat.Command.*;
+
+public class ChatClient {
 
         private Socket socket;
         private DataInputStream in;
@@ -109,6 +104,8 @@ import gb.ru.javafxchat.Command;
                 if (CLIENTS == command) {
                     Platform.runLater(() -> controller.updateClientsList(params));
                 }
+
+
             }
         }
 
@@ -123,6 +120,7 @@ import gb.ru.javafxchat.Command;
         public void sendMessage(Command command, String... params) {
             sendMessage(command.collectMessage(params));
         }
+
 
 
     }

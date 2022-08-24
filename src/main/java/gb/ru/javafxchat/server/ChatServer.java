@@ -1,6 +1,7 @@
 package gb.ru.javafxchat.server;
 
 import gb.ru.javafxchat.Command;
+import gb.ru.javafxchat.client.ChatClient;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -16,6 +17,7 @@ public class ChatServer {
     public ChatServer() {
         this.clients = new HashMap<>();
     }
+
 
     public void run() {
         try (ServerSocket serverSocket = new ServerSocket(9990);
@@ -67,8 +69,11 @@ public class ChatServer {
         clientTo.sendMessage(Command.MESSAGE, "От " + from.getNick() + ": " + message);
         from.sendMessage(Command.MESSAGE, "Участнику " + nickTo + ": " + message);
     }
+    public void newNickAdd(ChatClient client){
 
-    public void changeNick(ClientHandler clientHandler, String newNick) {
 
     }
+
+
+
 }

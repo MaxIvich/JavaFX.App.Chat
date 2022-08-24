@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.Socket;
 
 import gb.ru.javafxchat.Command;
+import gb.ru.javafxchat.client.ChatClient;
 
 public class ClientHandler {
     private Socket socket;
@@ -154,8 +155,7 @@ public class ClientHandler {
     public  String getNick() {
         return nick;
     }
-    public void newNickAdd(String nick){
 
-    }
+
 
 }

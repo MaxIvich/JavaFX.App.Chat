@@ -1,11 +1,10 @@
 package gb.ru.javafxchat.client;
 import java.io.IOException;
+import java.net.Socket;
 import java.sql.SQLException;
 import java.util.Optional;
 
-import gb.ru.javafxchat.server.ChangeNickService;
-import gb.ru.javafxchat.server.ClientHandler;
-import gb.ru.javafxchat.server.SqlBd;
+import gb.ru.javafxchat.server.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -140,17 +139,17 @@ public class ChatController {
 
     }
 
-
     public void changeNickBtn(ActionEvent actionEvent) throws SQLException {
 
         final String newNick = ChengNickField.getText();
         if (newNick != null){
-            SqlBd.SqlChengeNick(newNick,this.selectedNick );
-
-
+            client.sendMessage(Command.ChangeNick,newNick);
         }
-
     }
+
+
+
+
 
 }
 
