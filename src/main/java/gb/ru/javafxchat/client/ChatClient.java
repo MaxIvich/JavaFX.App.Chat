@@ -5,6 +5,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import javafx.application.Platform;
 import gb.ru.javafxchat.Command;
@@ -18,6 +20,9 @@ public class ChatClient {
         private DataOutputStream out;
 
         private final ChatController controller;
+
+
+        Path history = Path.of("src/main/resources/history.txt");
 
         public ChatClient(ChatController controller) {
             this.controller = controller;
@@ -49,6 +54,9 @@ public class ChatClient {
                     final String nick = params[0];
                     controller.setAuth(true);
                     controller.addMessage("Успешная авторизация под ником " + nick);
+                    controller.addMessage(controller.AddHistory(history));
+
+
                     break;
                 }
                 if (command == ERROR) {
@@ -57,6 +65,8 @@ public class ChatClient {
                 }
             }
         }
+
+
 
 
         private void closeConnection() {
@@ -106,6 +116,7 @@ public class ChatClient {
                 }
 
 
+
             }
         }
 
@@ -119,6 +130,13 @@ public class ChatClient {
 
         public void sendMessage(Command command, String... params) {
             sendMessage(command.collectMessage(params));
+        }
+
+
+
+
+        public void nnick(){
+
         }
 
 

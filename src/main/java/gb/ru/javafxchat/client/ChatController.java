@@ -1,8 +1,14 @@
 package gb.ru.javafxchat.client;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.Scanner;
 
 import gb.ru.javafxchat.server.*;
 import javafx.event.ActionEvent;
@@ -17,6 +23,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import gb.ru.javafxchat.Command;
+
 
 
 
@@ -42,6 +49,13 @@ public class ChatController {
     private String selectedNick;
     @FXML
     private TextField ChengNickField;
+
+
+    Path history = Path.of("src/main/resources/history.txt");
+    Path timeHis = Path.of("src/main/resources/history.txt");
+
+
+
 
 
 
@@ -94,6 +108,7 @@ public class ChatController {
 
     public void addMessage(String message) {
         messageArea.appendText(message + "\n");
+
     }
 
     public void setAuth(boolean success) {
@@ -143,9 +158,57 @@ public class ChatController {
 
         final String newNick = ChengNickField.getText();
         if (newNick != null){
-            client.sendMessage(Command.ChangeNick,newNick);
+         //   client.sendMessage(Command.ChangeNick,newNick);
+
+
+
+
+
+
         }
     }
+    public String AddHistory(Path history) throws IOException {
+      //  try {
+      //      return Files.readString(history);
+      //  } catch (IOException e) {
+      //      throw new RuntimeException(e);
+      //  }
+        try {
+            long lines = 0;
+            FileReader reader  = new FileReader(history.toFile());
+            LineNumberReader lineNumberReader = new LineNumberReader(reader);
+            FileWriter writer = new FileWriter(timeHis.toFile(),true);
+
+            while (lineNumberReader.readLine() != null){
+                lines = lineNumberReader.getLineNumber();
+            }
+            System.out.println(lines);
+
+            if (lines>100){
+                long y = lines-100;
+               for (long i = lines; i > lines-y; i--) {
+
+
+                    String s = Files.readAllLines(history).get((int) i);
+                    writer.write(s);
+                }
+
+            }
+            if (lines<100){
+
+                for (int i = 0; i < lines; i++) {
+                    String s = Files.readAllLines(history).get(i);
+                  writer.write(s);
+                }
+
+                writer.flush();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return Files.readString(timeHis);
+    }
+
 
 
 

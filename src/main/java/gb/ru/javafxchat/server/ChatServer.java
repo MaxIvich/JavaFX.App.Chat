@@ -69,8 +69,9 @@ public class ChatServer {
         clientTo.sendMessage(Command.MESSAGE, "От " + from.getNick() + ": " + message);
         from.sendMessage(Command.MESSAGE, "Участнику " + nickTo + ": " + message);
     }
-    public void newNickAdd(ChatClient client){
+    public String getN(ClientHandler client){
 
+     return client.getNick();
 
     }
 

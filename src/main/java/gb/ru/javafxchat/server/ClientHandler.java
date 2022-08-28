@@ -1,8 +1,9 @@
 package gb.ru.javafxchat.server;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.sql.SQLException;
 
 import gb.ru.javafxchat.Command;
 import gb.ru.javafxchat.client.ChatClient;
@@ -14,6 +15,9 @@ public class ClientHandler {
     private DataOutputStream out;
     private String nick;
     private AuthService authService;
+
+    Path history = Path.of("src/main/resources/history.txt");
+
 
     public ClientHandler(Socket socket, ChatServer server, AuthService authService) {
         try {
@@ -121,6 +125,7 @@ public class ClientHandler {
     private void sendMessage(String message) {
         try {
             out.writeUTF(message);
+            writeTextToHistory(history,message);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -155,7 +160,34 @@ public class ClientHandler {
     public  String getNick() {
         return nick;
     }
+    public void newNickAdd(String nnick) throws SQLException {
+       String  n = this.getNick();
+       SqlBd.SqlChengeNick(nnick,n);
 
+
+
+
+
+
+    }
+    private static void writeTextToHistory(Path history, String message) {
+        try {
+            FileWriter writer = new FileWriter(history.toFile(),true);
+
+            writer.write(message + "\n");
+            writer.close();
+            read(history);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private static void read(Path history){
+        try {
+            System.out.println(Files.readString(history));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
 }
