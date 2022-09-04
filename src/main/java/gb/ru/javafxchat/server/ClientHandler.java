@@ -4,9 +4,12 @@ import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import gb.ru.javafxchat.Command;
 import gb.ru.javafxchat.client.ChatClient;
+import gb.ru.javafxchat.client.ChatController;
 
 public class ClientHandler {
     private Socket socket;
@@ -42,16 +45,9 @@ public class ClientHandler {
     private void authenticate() {
         while (true) {
             try {
-
-
-               // checkOutTime();
-
+                // checkOutTime();
                 final String message = in.readUTF();
                 final Command command = Command.getCommand(message);
-
-
-
-
                 if (command == Command.AUTH) {
                     final String[] params = command.parse(message);
                     final String login = params[0];
@@ -65,9 +61,11 @@ public class ClientHandler {
                         sendMessage(Command.AUTHOK, nick);
                         this.nick = nick;
                         server.broadcast(Command.MESSAGE, "Пользователь " + nick + " зашел в чат");
+                        Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE,"Пользователь \" + nick + \" зашел в чат");
                         server.subscribe(this);
                         break;
                     } else {
+                        Logger.getLogger(ClientHandler.class.getName()).log(Level.FINE,"Ввели неверные данные");
                         sendMessage(Command.ERROR, "Неверные логин и пароль");
                     }
                 }
@@ -103,6 +101,7 @@ public class ClientHandler {
                 in.close();
             } catch (IOException e) {
                 e.printStackTrace();
+                Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE,e.getMessage());
             }
         }
         if (out != null) {
@@ -110,6 +109,7 @@ public class ClientHandler {
                 out.close();
             } catch (IOException e) {
                 e.printStackTrace();
+                Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE,e.getMessage());
             }
         }
         if (socket != null) {
@@ -118,6 +118,7 @@ public class ClientHandler {
                 socket.close();
             } catch (IOException e) {
                 e.printStackTrace();
+                Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE,e.getMessage());
             }
         }
     }
@@ -138,8 +139,6 @@ public class ClientHandler {
                 final Command command = Command.getCommand(message);
                 if (command == Command.END) {
                     break;
-
-
                 }
                 if (command == Command.PRIVATE_MESSAGE) {
                     final String[] params = command.parse(message);
@@ -176,7 +175,7 @@ public class ClientHandler {
 
             writer.write(message + "\n");
             writer.close();
-            read(history);
+           // read(history);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

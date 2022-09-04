@@ -8,6 +8,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import  java.sql.*;
 
@@ -27,6 +29,7 @@ public class ChatServer {
                 final Socket socket = serverSocket.accept();
                 new ClientHandler(socket, this, authService);
                 System.out.println("Клиент подключен");
+                //Logger.getLogger(ChatServer.class.getName()).log(Level.FINE,"Клиент подключен");
             }
         } catch (IOException e) {
             e.printStackTrace();

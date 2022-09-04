@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 import gb.ru.javafxchat.server.*;
 import javafx.event.ActionEvent;
@@ -53,6 +54,7 @@ public class ChatController {
 
     Path history = Path.of("src/main/resources/history.txt");
     Path timeHis = Path.of("src/main/resources/history.txt");
+    Logger log = Logger.getLogger(ChatController.class.getName());
 
 
 

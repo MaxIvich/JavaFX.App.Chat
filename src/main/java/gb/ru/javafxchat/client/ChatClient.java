@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javafx.application.Platform;
 import gb.ru.javafxchat.Command;
@@ -54,6 +56,7 @@ public class ChatClient {
                     final String nick = params[0];
                     controller.setAuth(true);
                     controller.addMessage("Успешная авторизация под ником " + nick);
+                    Logger.getLogger(ChatClient.class.getName()).log(Level.FINE, "Успешная авторизация под ником \" + nick");
                     controller.addMessage(controller.AddHistory(history));
 
 

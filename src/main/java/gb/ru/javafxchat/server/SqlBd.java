@@ -110,6 +110,7 @@ public class SqlBd implements AuthService{
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
+
         }
 
     }
