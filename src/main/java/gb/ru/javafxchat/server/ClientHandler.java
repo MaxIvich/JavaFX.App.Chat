@@ -61,11 +61,11 @@ public class ClientHandler {
                         sendMessage(Command.AUTHOK, nick);
                         this.nick = nick;
                         server.broadcast(Command.MESSAGE, "Пользователь " + nick + " зашел в чат");
-                        Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE,"Пользователь \" + nick + \" зашел в чат");
+                        Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE,"Пользователь " + nick + " зашел в чат");
                         server.subscribe(this);
                         break;
                     } else {
-                        Logger.getLogger(ClientHandler.class.getName()).log(Level.FINE,"Ввели неверные данные");
+                        Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE,"Ввели неверные данные");
                         sendMessage(Command.ERROR, "Неверные логин и пароль");
                     }
                 }
@@ -127,6 +127,7 @@ public class ClientHandler {
         try {
             out.writeUTF(message);
             writeTextToHistory(history,message);
+            Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE,message);
         } catch (IOException e) {
             e.printStackTrace();
         }

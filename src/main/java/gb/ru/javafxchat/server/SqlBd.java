@@ -1,7 +1,11 @@
 package gb.ru.javafxchat.server;
+import gb.ru.javafxchat.client.ChatController;
+
 import java.io.IOException;
 import java.sql.*;
 import java.sql.DriverManager;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class SqlBd implements AuthService{
@@ -110,6 +114,8 @@ public class SqlBd implements AuthService{
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
+
+
 
         }
 

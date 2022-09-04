@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import gb.ru.javafxchat.server.ClientHandler;
 import javafx.application.Platform;
 import gb.ru.javafxchat.Command;
 
@@ -126,6 +127,7 @@ public class ChatClient {
         private void sendMessage(String message) {
             try {
                 out.writeUTF(message);
+                Logger.getLogger(ChatClient.class.getName()).log(Level.FINE," Новое сообщение   " + message);
             } catch (IOException e) {
                 e.printStackTrace();
             }

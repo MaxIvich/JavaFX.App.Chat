@@ -29,10 +29,11 @@ public class ChatServer {
                 final Socket socket = serverSocket.accept();
                 new ClientHandler(socket, this, authService);
                 System.out.println("Клиент подключен");
-                //Logger.getLogger(ChatServer.class.getName()).log(Level.FINE,"Клиент подключен");
+               Logger.getLogger(ChatServer.class.getName()).log(Level.FINE,"Клиент подключен");
             }
         } catch (IOException e) {
             e.printStackTrace();
+            Logger.getLogger(ChatServer.class.getName()).log(Level.SEVERE," Не удалось подключится");
         }
     }
 
