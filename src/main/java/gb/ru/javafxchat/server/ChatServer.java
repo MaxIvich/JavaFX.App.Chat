@@ -1,13 +1,17 @@
 package gb.ru.javafxchat.server;
+
+import gb.ru.javafxchat.Command;
+import gb.ru.javafxchat.client.ChatClient;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
-
-import gb.ru.javafxchat.Command;
-
+import  java.sql.*;
 
 public class ChatServer {
     private final Map<String, ClientHandler> clients;
@@ -16,17 +20,20 @@ public class ChatServer {
         this.clients = new HashMap<>();
     }
 
+
     public void run() {
-        try (ServerSocket serverSocket = new ServerSocket(9998);
-             AuthService authService = new InMemoryAuthService()) {
+        try (ServerSocket serverSocket = new ServerSocket(9990);
+             AuthService authService = new SqlBd()) {
             while (true) {
                 System.out.println("Ожидаю подключения...");
                 final Socket socket = serverSocket.accept();
                 new ClientHandler(socket, this, authService);
                 System.out.println("Клиент подключен");
+               Logger.getLogger(ChatServer.class.getName()).log(Level.FINE,"Клиент подключен");
             }
         } catch (IOException e) {
             e.printStackTrace();
+            Logger.getLogger(ChatServer.class.getName()).log(Level.SEVERE," Не удалось подключится");
         }
     }
 
@@ -66,4 +73,12 @@ public class ChatServer {
         clientTo.sendMessage(Command.MESSAGE, "От " + from.getNick() + ": " + message);
         from.sendMessage(Command.MESSAGE, "Участнику " + nickTo + ": " + message);
     }
+    public String getN(ClientHandler client){
+
+     return client.getNick();
+
+    }
+
+
+
 }

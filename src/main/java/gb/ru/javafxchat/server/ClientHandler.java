@@ -1,10 +1,15 @@
 package gb.ru.javafxchat.server;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import gb.ru.javafxchat.Command;
+import gb.ru.javafxchat.client.ChatClient;
+import gb.ru.javafxchat.client.ChatController;
 
 public class ClientHandler {
     private Socket socket;
@@ -13,6 +18,9 @@ public class ClientHandler {
     private DataOutputStream out;
     private String nick;
     private AuthService authService;
+
+    Path history = Path.of("src/main/resources/history.txt");
+
 
     public ClientHandler(Socket socket, ChatServer server, AuthService authService) {
         try {
@@ -37,16 +45,9 @@ public class ClientHandler {
     private void authenticate() {
         while (true) {
             try {
-
-
-                checkOutTime();
-
+                // checkOutTime();
                 final String message = in.readUTF();
                 final Command command = Command.getCommand(message);
-
-
-
-
                 if (command == Command.AUTH) {
                     final String[] params = command.parse(message);
                     final String login = params[0];
@@ -60,9 +61,11 @@ public class ClientHandler {
                         sendMessage(Command.AUTHOK, nick);
                         this.nick = nick;
                         server.broadcast(Command.MESSAGE, "Пользователь " + nick + " зашел в чат");
+                        Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE,"Пользователь " + nick + " зашел в чат");
                         server.subscribe(this);
                         break;
                     } else {
+                        Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE,"Ввели неверные данные");
                         sendMessage(Command.ERROR, "Неверные логин и пароль");
                     }
                 }
@@ -82,7 +85,7 @@ public class ClientHandler {
                        sendMessage(Command.END);
                    }
                }
-               ,12000);
+               ,120000);
 
     }
 
@@ -98,6 +101,7 @@ public class ClientHandler {
                 in.close();
             } catch (IOException e) {
                 e.printStackTrace();
+                Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE,e.getMessage());
             }
         }
         if (out != null) {
@@ -105,6 +109,7 @@ public class ClientHandler {
                 out.close();
             } catch (IOException e) {
                 e.printStackTrace();
+                Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE,e.getMessage());
             }
         }
         if (socket != null) {
@@ -113,6 +118,7 @@ public class ClientHandler {
                 socket.close();
             } catch (IOException e) {
                 e.printStackTrace();
+                Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE,e.getMessage());
             }
         }
     }
@@ -120,6 +126,8 @@ public class ClientHandler {
     private void sendMessage(String message) {
         try {
             out.writeUTF(message);
+            writeTextToHistory(history,message);
+            Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE,message);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -138,6 +146,10 @@ public class ClientHandler {
                     server.sendPrivateMessage(this, params[0], params[1]);
                     continue;
                 }
+               // if (command == Command.ChangeNick){
+               //     String newNick = command.parse(message)[0];
+               //     server.changeNick(this,newNick);
+               // }
                 server.broadcast(Command.MESSAGE, nick + ": " + command.parse(message)[0]);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -145,7 +157,37 @@ public class ClientHandler {
         }
     }
 
-    public String getNick() {
+    public  String getNick() {
         return nick;
     }
+    public void newNickAdd(String nnick) throws SQLException {
+       String  n = this.getNick();
+       SqlBd.SqlChengeNick(nnick,n);
+
+
+
+
+
+
+    }
+    private static void writeTextToHistory(Path history, String message) {
+        try {
+            FileWriter writer = new FileWriter(history.toFile(),true);
+
+            writer.write(message + "\n");
+            writer.close();
+           // read(history);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private static void read(Path history){
+        try {
+            System.out.println(Files.readString(history));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 }

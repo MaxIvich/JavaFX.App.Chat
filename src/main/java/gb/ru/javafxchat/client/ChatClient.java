@@ -1,22 +1,22 @@
 package gb.ru.javafxchat.client;
 
 
-import static gb.ru.javafxchat.Command.AUTHOK;
-import static gb.ru.javafxchat.Command.CLIENTS;
-import static gb.ru.javafxchat.Command.END;
-import static gb.ru.javafxchat.Command.ERROR;
-import static gb.ru.javafxchat.Command.MESSAGE;
-import static gb.ru.javafxchat.Command.getCommand;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import gb.ru.javafxchat.server.ClientHandler;
 import javafx.application.Platform;
 import gb.ru.javafxchat.Command;
 
-    public class ChatClient {
+import static gb.ru.javafxchat.Command.*;
+
+public class ChatClient {
 
         private Socket socket;
         private DataInputStream in;
@@ -24,12 +24,15 @@ import gb.ru.javafxchat.Command;
 
         private final ChatController controller;
 
+
+        Path history = Path.of("src/main/resources/history.txt");
+
         public ChatClient(ChatController controller) {
             this.controller = controller;
         }
 
         public void openConnection() throws IOException {
-            socket = new Socket("localhost", 9998);
+            socket = new Socket("localhost", 9990);
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
             new Thread(() -> {
@@ -54,6 +57,10 @@ import gb.ru.javafxchat.Command;
                     final String nick = params[0];
                     controller.setAuth(true);
                     controller.addMessage("Успешная авторизация под ником " + nick);
+                    Logger.getLogger(ChatClient.class.getName()).log(Level.FINE, "Успешная авторизация под ником \" + nick");
+                    controller.addMessage(controller.AddHistory(history));
+
+
                     break;
                 }
                 if (command == ERROR) {
@@ -62,6 +69,9 @@ import gb.ru.javafxchat.Command;
                 }
             }
         }
+
+
+
 
         private void closeConnection() {
             if (in != null) {
@@ -93,7 +103,8 @@ import gb.ru.javafxchat.Command;
                 final Command command = getCommand(message);
                 if (END == command) {
                     controller.setAuth(false);
-                    break;
+                     break;
+
                 }
                 final String[] params = command.parse(message);
                 if (ERROR == command) {
@@ -107,12 +118,16 @@ import gb.ru.javafxchat.Command;
                 if (CLIENTS == command) {
                     Platform.runLater(() -> controller.updateClientsList(params));
                 }
+
+
+
             }
         }
 
         private void sendMessage(String message) {
             try {
                 out.writeUTF(message);
+                Logger.getLogger(ChatClient.class.getName()).log(Level.FINE," Новое сообщение   " + message);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -121,5 +136,16 @@ import gb.ru.javafxchat.Command;
         public void sendMessage(Command command, String... params) {
             sendMessage(command.collectMessage(params));
         }
+
+
+
+
+        public void nnick(){
+
+        }
+
+
+
     }
+
 

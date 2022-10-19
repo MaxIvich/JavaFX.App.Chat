@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 
 public enum Command {
+
     AUTH("/auth") { // /auth login1 pass1
 
         @Override
@@ -61,7 +62,22 @@ public enum Command {
             final String[] split = commandText.split(TOKEN_DELIMITER, 2);
             return new String[]{split[1]};
         }
+    },
+    ChangeNick("/ChangeNick") {
+        @Override
+        public String[] parse(String commandText) {
+            final String[] split = commandText.split(TOKEN_DELIMITER, 2);
+            return new String[]{split[1]};
+        }
     };
+   // LOGOUTMSG("/logout"){
+   //     @Override
+   //     public String[] parse(String commandText) {
+   //         return new String[0];
+   //     }
+//
+//
+   // }
 
     private final String command;
     static final String TOKEN_DELIMITER = "\\p{Blank}+";
@@ -80,7 +96,7 @@ public enum Command {
         return message.startsWith("/");
     }
 
-    public static Command getCommand(String message) { // /klkj n nlknl
+    public static Command getCommand(String message) {
         if (!isCommand(message)) {
             throw new RuntimeException("'" + message + "' is not a command");
         }
